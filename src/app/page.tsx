@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 /* ------------------------------------------------------------------ */
 /* Declare globals loaded via CDN <script> tags                       */
@@ -15,6 +16,7 @@ declare global {
 
 export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const locoScrollRef = useRef<any>(null);
 
   useEffect(() => {
     /* Wait for GSAP + Locomotive CDN scripts to load */
@@ -71,12 +73,14 @@ export default function Home() {
       const container = scrollContainerRef.current;
       if (!container) return;
 
-      const locoScroll = new window.LocomotiveScroll({
-        el: container,
-        smooth: true,
-        multiplier: 0.8,
-        lerp: 0.06,
-      });
+        const locoScroll = new window.LocomotiveScroll({
+          el: container,
+          smooth: true,
+          multiplier: 1,
+          lerp: 0.1,
+        });
+
+        locoScrollRef.current = locoScroll;
 
       locoScroll.on("scroll", ScrollTrigger.update);
 
@@ -120,22 +124,20 @@ export default function Home() {
 
       /* --- Hero text --- */
       gsap.from(".hero__title", {
-        opacity: 0,
-        y: 50,
-        filter: "blur(10px)",
-        duration: 1.2,
-        delay: 0.2,
-        ease: "power3.out",
-      });
+          opacity: 0,
+          y: 50,
+          duration: 1.2,
+          delay: 0.2,
+          ease: "power3.out",
+        });
 
-      gsap.from(".hero__subtitle", {
-        opacity: 0,
-        y: 30,
-        filter: "blur(6px)",
-        duration: 1,
-        delay: 0.5,
-        ease: "power3.out",
-      });
+        gsap.from(".hero__subtitle", {
+          opacity: 0,
+          y: 30,
+          duration: 1,
+          delay: 0.5,
+          ease: "power3.out",
+        });
 
       gsap.from(".hero__ctas .btn", {
         opacity: 0,
@@ -146,31 +148,31 @@ export default function Home() {
         ease: "power3.out",
       });
 
-      /* --- About section --- */
-      gsap.from(".about__photo-wrap", {
-        scrollTrigger: {
-          trigger: ".about",
-          start: "top 80%",
-        },
-        x: -60,
-        opacity: 0,
-        filter: "blur(10px)",
-        duration: 1,
-        ease: "power3.out",
-      });
+        /* --- About section --- */
+          gsap.from(".about__photo-wrap", {
+            scrollTrigger: {
+              trigger: ".about",
+              start: "top 80%",
+              toggleActions: "play reverse play reverse",
+            },
+            x: -60,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          });
 
-      gsap.from(".about__bio > *", {
-        scrollTrigger: {
-          trigger: ".about__bio",
-          start: "top 80%",
-        },
-        y: 30,
-        opacity: 0,
-        filter: "blur(6px)",
-        stagger: 0.12,
-        duration: 0.8,
-        ease: "power3.out",
-      });
+          gsap.from(".about__bio > *", {
+            scrollTrigger: {
+              trigger: ".about__bio",
+              start: "top 80%",
+              toggleActions: "play reverse play reverse",
+            },
+            y: 30,
+            opacity: 0,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: "power3.out",
+          });
 
       /* --- Education timeline --- */
       gsap.to(".timeline-line-fill", {
@@ -184,119 +186,125 @@ export default function Home() {
         ease: "none",
       });
 
-      (gsap.utils.toArray(".education__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
-        gsap.from(item, {
-          scrollTrigger: {
-            trigger: item,
-            start: "top 85%",
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          delay: i * 0.15,
-          ease: "power3.out",
+        (gsap.utils.toArray(".education__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
+          gsap.from(item, {
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              toggleActions: "play reverse play reverse",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            delay: i * 0.15,
+            ease: "power3.out",
+          });
         });
-      });
 
       /* --- Teaching cards --- */
-      (gsap.utils.toArray(".teaching__card") as HTMLElement[]).forEach((card: HTMLElement, i: number) => {
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-          },
-          y: 40,
-          opacity: 0,
-          duration: 0.7,
-          delay: i * 0.1,
-          ease: "power3.out",
+        (gsap.utils.toArray(".teaching__card") as HTMLElement[]).forEach((card: HTMLElement, i: number) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play reverse play reverse",
+            },
+            y: 40,
+            opacity: 0,
+            duration: 0.7,
+            delay: i * 0.1,
+            ease: "power3.out",
+          });
         });
-      });
 
       /* --- Research grid items --- */
-      (gsap.utils.toArray(".research__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
-        gsap.from(item, {
-          scrollTrigger: {
-            trigger: item,
-            start: "top 88%",
-          },
-          scale: 0.8,
-          opacity: 0,
-          duration: 0.6,
-          delay: i * 0.08,
-          ease: "back.out(1.4)",
+        (gsap.utils.toArray(".research__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
+          gsap.from(item, {
+            scrollTrigger: {
+              trigger: item,
+              start: "top 88%",
+              toggleActions: "play reverse play reverse",
+            },
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.6,
+            delay: i * 0.08,
+            ease: "back.out(1.4)",
+          });
         });
-      });
 
       /* --- Publication items --- */
-      (gsap.utils.toArray(".pub__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
-        gsap.from(item, {
-          scrollTrigger: {
-            trigger: item,
-            start: "top 88%",
-          },
-          y: 25,
-          opacity: 0,
-          duration: 0.6,
-          delay: i * 0.06,
-          ease: "power3.out",
+        (gsap.utils.toArray(".pub__item") as HTMLElement[]).forEach((item: HTMLElement, i: number) => {
+          gsap.from(item, {
+            scrollTrigger: {
+              trigger: item,
+              start: "top 88%",
+              toggleActions: "play reverse play reverse",
+            },
+            y: 25,
+            opacity: 0,
+            duration: 0.6,
+            delay: i * 0.06,
+            ease: "power3.out",
+          });
         });
-      });
 
       /* --- Section headers --- */
-      (gsap.utils.toArray(".section__label, .section__title, .section__desc") as HTMLElement[]).forEach((el: HTMLElement) => {
-        gsap.from(el, {
-          scrollTrigger: {
-            trigger: el,
-            start: "top 88%",
-          },
-          y: 30,
-          opacity: 0,
-          filter: "blur(6px)",
-          duration: 0.8,
-          ease: "power3.out",
-        });
-      });
+          (gsap.utils.toArray(".section__label, .section__title, .section__desc") as HTMLElement[]).forEach((el: HTMLElement) => {
+            gsap.from(el, {
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play reverse play reverse",
+              },
+              y: 30,
+              opacity: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            });
+          });
 
       /* --- Contact inputs --- */
-      (gsap.utils.toArray(".contact__input, .contact__textarea") as HTMLElement[]).forEach((el: HTMLElement, i: number) => {
-        gsap.from(el, {
+        (gsap.utils.toArray(".contact__input, .contact__textarea") as HTMLElement[]).forEach((el: HTMLElement, i: number) => {
+          gsap.from(el, {
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              toggleActions: "play reverse play reverse",
+            },
+            x: -40,
+            opacity: 0,
+            duration: 0.6,
+            delay: i * 0.1,
+            ease: "power3.out",
+          });
+        });
+
+        gsap.from(".contact__submit", {
           scrollTrigger: {
-            trigger: el,
-            start: "top 90%",
+            trigger: ".contact__submit",
+            start: "top 92%",
+            toggleActions: "play reverse play reverse",
           },
-          x: -40,
+          scale: 0.9,
           opacity: 0,
           duration: 0.6,
-          delay: i * 0.1,
           ease: "power3.out",
         });
-      });
-
-      gsap.from(".contact__submit", {
-        scrollTrigger: {
-          trigger: ".contact__submit",
-          start: "top 92%",
-        },
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power3.out",
-      });
 
       /* --- Footer --- */
-      gsap.from(".footer > *", {
-        scrollTrigger: {
-          trigger: ".footer",
-          start: "top 90%",
-        },
-        y: 60,
-        opacity: 0,
-        filter: "blur(6px)",
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
-      });
+          gsap.from(".footer > *", {
+            scrollTrigger: {
+              trigger: ".footer",
+              start: "top 90%",
+              toggleActions: "play reverse play reverse",
+            },
+            y: 60,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+          });
     }
   }
 
@@ -311,6 +319,14 @@ export default function Home() {
   function closeMenu() {
     document.querySelector(".nav__hamburger")?.classList.remove("active");
     document.querySelector(".nav__mobile-menu")?.classList.remove("active");
+  }
+
+  function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, targetId: string) {
+    e.preventDefault();
+    closeMenu();
+    if (locoScrollRef.current) {
+      locoScrollRef.current.scrollTo(targetId, { offset: -80, duration: 1.2 });
+    }
   }
 
   /* ============================================================
@@ -373,13 +389,13 @@ export default function Home() {
           B<span>.</span>K<span>.</span> Jha
         </div>
         <ul className="nav__links">
-          <li><a href="#about" onClick={closeMenu}>About</a></li>
-          <li><a href="#education" onClick={closeMenu}>Education</a></li>
-          <li><a href="#teaching" onClick={closeMenu}>Teaching</a></li>
-          <li><a href="#research" onClick={closeMenu}>Research</a></li>
-          <li><a href="#publications" onClick={closeMenu}>Publications</a></li>
-          <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
-        </ul>
+            <li><a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a></li>
+            <li><a href="#education" onClick={(e) => handleNavClick(e, "#education")}>Education</a></li>
+            <li><a href="#teaching" onClick={(e) => handleNavClick(e, "#teaching")}>Teaching</a></li>
+            <li><a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a></li>
+            <li><a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a></li>
+            <li><a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a></li>
+          </ul>
         <div className="nav__hamburger" onClick={toggleMenu}>
           <span /><span /><span />
         </div>
@@ -387,13 +403,13 @@ export default function Home() {
 
       {/* Mobile Menu */}
       <div className="nav__mobile-menu">
-        <a href="#about" onClick={closeMenu}>About</a>
-        <a href="#education" onClick={closeMenu}>Education</a>
-        <a href="#teaching" onClick={closeMenu}>Teaching</a>
-        <a href="#research" onClick={closeMenu}>Research</a>
-        <a href="#publications" onClick={closeMenu}>Publications</a>
-        <a href="#contact" onClick={closeMenu}>Contact</a>
-      </div>
+          <a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a>
+          <a href="#education" onClick={(e) => handleNavClick(e, "#education")}>Education</a>
+          <a href="#teaching" onClick={(e) => handleNavClick(e, "#teaching")}>Teaching</a>
+          <a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a>
+          <a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a>
+          <a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a>
+        </div>
 
       {/* ============================
           MAIN CONTENT
@@ -426,13 +442,13 @@ export default function Home() {
               Bayesian Estimation &nbsp;|&nbsp; Decision Theory
             </p>
             <div className="hero__ctas">
-              <a href="#publications" className="btn btn--primary">
-                View Research
-              </a>
-              <a href="#contact" className="btn btn--outline">
-                Contact
-              </a>
-            </div>
+                <a href="#publications" className="btn btn--primary" onClick={(e) => handleNavClick(e, "#publications")}>
+                  View Research
+                </a>
+                <a href="#contact" className="btn btn--outline" onClick={(e) => handleNavClick(e, "#contact")}>
+                  Contact
+                </a>
+              </div>
           </div>
         </section>
 
@@ -443,24 +459,15 @@ export default function Home() {
             <div className="section__title">About Me</div>
             <div className="about__grid">
               <div className="about__photo-wrap">
-                <div className="about__photo-glow" />
-                {/* Placeholder profile – uses a gradient circle until a real photo is provided */}
-                <div
-                  className="about__photo"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "3.5rem",
-                    fontFamily: "var(--font-heading)",
-                    color: "var(--accent-cyan)",
-                    fontWeight: 600,
-                  }}
-                >
-                  BKJ
-                </div>
+                  <div className="about__photo-glow" />
+                  <Image
+                    src="/profile-photo.jpg"
+                    alt="Dr. Brijesh Kumar Jha"
+                    width={400}
+                    height={400}
+                    className="about__photo"
+                    priority
+                  />
               </div>
               <div className="about__bio">
                 <h3>Academic &amp; Research Profile</h3>
@@ -501,41 +508,44 @@ export default function Home() {
             <div className="education__timeline">
               <div className="timeline-line-fill" />
 
-              <div className="education__item">
-                <div className="education__card glass-card">
-                  <div className="education__degree">
-                    PhD in Statistics
+                <div className="education__item">
+                  <div className="education__card glass-card">
+                    <div className="education__degree">
+                      Ph.D., Mathematical Statistics
+                    </div>
+                    <div className="education__institution">
+                      SOA University (Siksha &apos;O&apos; Anusandhan)
+                    </div>
+                    <div className="education__location">Bhubaneswar, Odisha</div>
+                    <div className="education__duration">Feb 2018 – Apr 2023</div>
                   </div>
-                  <div className="education__institution">
-                    Siksha &apos;O&apos; Anusandhan (Deemed to be University)
-                  </div>
-                  <div className="education__location">Bhubaneswar, Odisha</div>
                 </div>
-              </div>
 
-              <div className="education__item">
-                <div className="education__card glass-card">
-                  <div className="education__degree">
-                    MSc in Statistics
+                <div className="education__item">
+                  <div className="education__card glass-card">
+                    <div className="education__degree">
+                      Postgraduate Degree, Statistics
+                    </div>
+                    <div className="education__institution">
+                      Utkal University
+                    </div>
+                    <div className="education__location">Bhubaneswar, Odisha</div>
+                    <div className="education__duration">2012 – 2014</div>
                   </div>
-                  <div className="education__institution">
-                    Utkal University
-                  </div>
-                  <div className="education__location">Bhubaneswar, Odisha</div>
                 </div>
-              </div>
 
-              <div className="education__item">
-                <div className="education__card glass-card">
-                  <div className="education__degree">
-                    BSc in Mathematics &amp; Computing
+                <div className="education__item">
+                  <div className="education__card glass-card">
+                    <div className="education__degree">
+                      Graduate, Mathematics and Computer Science
+                    </div>
+                    <div className="education__institution">
+                      Institute of Mathematics and Applications
+                    </div>
+                    <div className="education__location">Bhubaneswar, Odisha</div>
+                    <div className="education__duration">2009 – 2012</div>
                   </div>
-                  <div className="education__institution">
-                    Institute of Mathematics and Applications
-                  </div>
-                  <div className="education__location">Bhubaneswar, Odisha</div>
                 </div>
-              </div>
             </div>
           </div>
         </section>
@@ -731,11 +741,11 @@ export default function Home() {
             ))}
           </div>
           <ul className="footer__links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
+              <li><a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a></li>
+              <li><a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a></li>
+              <li><a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a></li>
+              <li><a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a></li>
+            </ul>
           <div className="footer__icons">
             <a
               href="mailto:brijesh@example.com"

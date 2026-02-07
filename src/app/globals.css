@@ -438,6 +438,8 @@ img {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   transition: all var(--transition);
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .glass-card:hover {
@@ -613,6 +615,12 @@ img {
 .education__location {
   font-size: 0.82rem;
   color: var(--text-muted);
+}
+.education__duration {
+  font-size: 0.82rem;
+  color: var(--accent-cyan);
+  margin-top: 0.35rem;
+  font-weight: 500;
 }
 
 /* ============================================
