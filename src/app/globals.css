@@ -35,14 +35,12 @@
 
 html {
   scroll-behavior: auto; /* locomotive handles smooth scroll */
-  overflow: hidden;
 }
 
 body {
   font-family: var(--font-body);
   background: var(--bg-primary);
   color: var(--text-primary);
-  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
