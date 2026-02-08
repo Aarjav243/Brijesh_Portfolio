@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 
 /* ------------------------------------------------------------------ */
 /* Declare globals loaded via CDN <script> tags                       */
@@ -16,7 +15,6 @@ declare global {
 
 export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const locoScrollRef = useRef<any>(null);
 
   useEffect(() => {
     /* Wait for GSAP + Locomotive CDN scripts to load */
@@ -76,22 +74,9 @@ export default function Home() {
       const locoScroll = new window.LocomotiveScroll({
         el: container,
         smooth: true,
-        multiplier: 1.0,
-        lerp: 0.1,
-        touchMultiplier: 3.5,
-        tablet: {
-          smooth: true,
-          breakpoint: 0,
-          lerp: 0.15
-        },
-        smartphone: {
-          smooth: true,
-          breakpoint: 0,
-          lerp: 0.18
-        }
+        multiplier: 0.8,
+        lerp: 0.06,
       });
-
-      locoScrollRef.current = locoScroll;
 
       locoScroll.on("scroll", ScrollTrigger.update);
 
@@ -137,6 +122,7 @@ export default function Home() {
       gsap.from(".hero__title", {
         opacity: 0,
         y: 50,
+        filter: "blur(10px)",
         duration: 1.2,
         delay: 0.2,
         ease: "power3.out",
@@ -145,6 +131,7 @@ export default function Home() {
       gsap.from(".hero__subtitle", {
         opacity: 0,
         y: 30,
+        filter: "blur(6px)",
         duration: 1,
         delay: 0.5,
         ease: "power3.out",
@@ -164,10 +151,10 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".about",
           start: "top 80%",
-          toggleActions: "play reverse play reverse",
         },
         x: -60,
         opacity: 0,
+        filter: "blur(10px)",
         duration: 1,
         ease: "power3.out",
       });
@@ -176,10 +163,10 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".about__bio",
           start: "top 80%",
-          toggleActions: "play reverse play reverse",
         },
         y: 30,
         opacity: 0,
+        filter: "blur(6px)",
         stagger: 0.12,
         duration: 0.8,
         ease: "power3.out",
@@ -202,7 +189,6 @@ export default function Home() {
           scrollTrigger: {
             trigger: item,
             start: "top 85%",
-            toggleActions: "play reverse play reverse",
           },
           y: 50,
           opacity: 0,
@@ -218,7 +204,6 @@ export default function Home() {
           scrollTrigger: {
             trigger: card,
             start: "top 85%",
-            toggleActions: "play reverse play reverse",
           },
           y: 40,
           opacity: 0,
@@ -234,7 +219,6 @@ export default function Home() {
           scrollTrigger: {
             trigger: item,
             start: "top 88%",
-            toggleActions: "play reverse play reverse",
           },
           scale: 0.8,
           opacity: 0,
@@ -250,7 +234,6 @@ export default function Home() {
           scrollTrigger: {
             trigger: item,
             start: "top 88%",
-            toggleActions: "play reverse play reverse",
           },
           y: 25,
           opacity: 0,
@@ -266,10 +249,10 @@ export default function Home() {
           scrollTrigger: {
             trigger: el,
             start: "top 88%",
-            toggleActions: "play reverse play reverse",
           },
           y: 30,
           opacity: 0,
+          filter: "blur(6px)",
           duration: 0.8,
           ease: "power3.out",
         });
@@ -281,7 +264,6 @@ export default function Home() {
           scrollTrigger: {
             trigger: el,
             start: "top 90%",
-            toggleActions: "play reverse play reverse",
           },
           x: -40,
           opacity: 0,
@@ -295,7 +277,6 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".contact__submit",
           start: "top 92%",
-          toggleActions: "play reverse play reverse",
         },
         scale: 0.9,
         opacity: 0,
@@ -308,10 +289,10 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".footer",
           start: "top 90%",
-          toggleActions: "play reverse play reverse",
         },
         y: 60,
         opacity: 0,
+        filter: "blur(6px)",
         stagger: 0.1,
         duration: 0.8,
         ease: "power3.out",
@@ -330,14 +311,6 @@ export default function Home() {
   function closeMenu() {
     document.querySelector(".nav__hamburger")?.classList.remove("active");
     document.querySelector(".nav__mobile-menu")?.classList.remove("active");
-  }
-
-  function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, targetId: string) {
-    e.preventDefault();
-    closeMenu();
-    if (locoScrollRef.current) {
-      locoScrollRef.current.scrollTo(targetId, { offset: -80, duration: 1.2 });
-    }
   }
 
   /* ============================================================
@@ -362,20 +335,13 @@ export default function Home() {
   /* ============================================================
      FOOTER PARTICLES (generate positions)
      ============================================================ */
-  // Use deterministic values to avoid SSR/client hydration mismatch
-  const particles = Array.from({ length: 30 }, (_, i) => {
-    const hash1 = ((i * 2654435761) >>> 0) / 4294967296;
-    const hash2 = ((i * 2246822519 + 1) >>> 0) / 4294967296;
-    const hash3 = ((i * 3266489917 + 2) >>> 0) / 4294967296;
-    const hash4 = ((i * 668265263 + 3) >>> 0) / 4294967296;
-    return {
-      id: i,
-      left: `${(hash1 * 100).toFixed(4)}%`,
-      top: `${(hash2 * 100).toFixed(4)}%`,
-      animDelay: `${(hash3 * 4).toFixed(4)}s`,
-      size: `${(1 + hash4 * 2).toFixed(4)}px`,
-    };
-  });
+  const particles = Array.from({ length: 30 }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animDelay: `${Math.random() * 4}s`,
+    size: `${1 + Math.random() * 2}px`,
+  }));
 
   return (
     <>
@@ -400,12 +366,12 @@ export default function Home() {
           B<span>.</span>K<span>.</span> Jha
         </div>
         <ul className="nav__links">
-          <li><a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a></li>
-          <li><a href="#education" onClick={(e) => handleNavClick(e, "#education")}>Education</a></li>
-          <li><a href="#teaching" onClick={(e) => handleNavClick(e, "#teaching")}>Teaching</a></li>
-          <li><a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a></li>
-          <li><a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a></li>
-          <li><a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a></li>
+          <li><a href="#about" onClick={closeMenu}>About</a></li>
+          <li><a href="#education" onClick={closeMenu}>Education</a></li>
+          <li><a href="#teaching" onClick={closeMenu}>Teaching</a></li>
+          <li><a href="#research" onClick={closeMenu}>Research</a></li>
+          <li><a href="#publications" onClick={closeMenu}>Publications</a></li>
+          <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
         </ul>
         <div className="nav__hamburger" onClick={toggleMenu}>
           <span /><span /><span />
@@ -414,12 +380,12 @@ export default function Home() {
 
       {/* Mobile Menu */}
       <div className="nav__mobile-menu">
-        <a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a>
-        <a href="#education" onClick={(e) => handleNavClick(e, "#education")}>Education</a>
-        <a href="#teaching" onClick={(e) => handleNavClick(e, "#teaching")}>Teaching</a>
-        <a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a>
-        <a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a>
-        <a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a>
+        <a href="#about" onClick={closeMenu}>About</a>
+        <a href="#education" onClick={closeMenu}>Education</a>
+        <a href="#teaching" onClick={closeMenu}>Teaching</a>
+        <a href="#research" onClick={closeMenu}>Research</a>
+        <a href="#publications" onClick={closeMenu}>Publications</a>
+        <a href="#contact" onClick={closeMenu}>Contact</a>
       </div>
 
       {/* ============================
@@ -432,7 +398,16 @@ export default function Home() {
       >
         {/* ── HERO ── */}
         <section className="hero" id="hero" data-scroll-section>
-          <div className="hero__pattern-bg" />
+          <div className="hero__spline-bg">
+            <iframe
+              src="https://my.spline.design/projectpromolookatmouse-CMgW7tIuRoFMZPcG7XkuA6ts/"
+              width="100%"
+              height="100%"
+              style={{ border: "none" }}
+              loading="lazy"
+              title="Spline 3D Background"
+            />
+          </div>
           <div className="hero__overlay" />
           <div className="glow-orb glow-orb--1" />
           <div className="glow-orb glow-orb--2" />
@@ -444,10 +419,10 @@ export default function Home() {
               Bayesian Estimation &nbsp;|&nbsp; Decision Theory
             </p>
             <div className="hero__ctas">
-              <a href="#publications" className="btn btn--primary" onClick={(e) => handleNavClick(e, "#publications")}>
+              <a href="#publications" className="btn btn--primary">
                 View Research
               </a>
-              <a href="#contact" className="btn btn--outline" onClick={(e) => handleNavClick(e, "#contact")}>
+              <a href="#contact" className="btn btn--outline">
                 Contact
               </a>
             </div>
@@ -462,14 +437,23 @@ export default function Home() {
             <div className="about__grid">
               <div className="about__photo-wrap">
                 <div className="about__photo-glow" />
-                <Image
-                  src="/profile-photo.jpg"
-                  alt="Dr. Brijesh Kumar Jha"
-                  width={400}
-                  height={400}
+                {/* Placeholder profile – uses a gradient circle until a real photo is provided */}
+                <div
                   className="about__photo"
-                  priority
-                />
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "3.5rem",
+                    fontFamily: "var(--font-heading)",
+                    color: "var(--accent-cyan)",
+                    fontWeight: 600,
+                  }}
+                >
+                  BKJ
+                </div>
               </div>
               <div className="about__bio">
                 <h3>Academic &amp; Research Profile</h3>
@@ -482,7 +466,7 @@ export default function Home() {
                 <p>
                   He completed his <strong>MSc in Statistics</strong> from Utkal
                   University, Bhubaneswar, and his <strong>BSc in Mathematics &amp;
-                    Computing</strong> from the Institute of Mathematics and Applications,
+                  Computing</strong> from the Institute of Mathematics and Applications,
                   Bhubaneswar.
                 </p>
                 <p>
@@ -513,39 +497,36 @@ export default function Home() {
               <div className="education__item">
                 <div className="education__card glass-card">
                   <div className="education__degree">
-                    Ph.D., Mathematical Statistics
+                    PhD in Statistics
                   </div>
                   <div className="education__institution">
-                    SOA University (Siksha &apos;O&apos; Anusandhan)
+                    Siksha &apos;O&apos; Anusandhan (Deemed to be University)
                   </div>
                   <div className="education__location">Bhubaneswar, Odisha</div>
-                  <div className="education__duration">Feb 2018 – Apr 2023</div>
                 </div>
               </div>
 
               <div className="education__item">
                 <div className="education__card glass-card">
                   <div className="education__degree">
-                    Postgraduate Degree, Statistics
+                    MSc in Statistics
                   </div>
                   <div className="education__institution">
                     Utkal University
                   </div>
                   <div className="education__location">Bhubaneswar, Odisha</div>
-                  <div className="education__duration">2012 – 2014</div>
                 </div>
               </div>
 
               <div className="education__item">
                 <div className="education__card glass-card">
                   <div className="education__degree">
-                    Graduate, Mathematics and Computer Science
+                    BSc in Mathematics &amp; Computing
                   </div>
                   <div className="education__institution">
                     Institute of Mathematics and Applications
                   </div>
                   <div className="education__location">Bhubaneswar, Odisha</div>
-                  <div className="education__duration">2009 – 2012</div>
                 </div>
               </div>
             </div>
@@ -743,10 +724,10 @@ export default function Home() {
             ))}
           </div>
           <ul className="footer__links">
-            <li><a href="#about" onClick={(e) => handleNavClick(e, "#about")}>About</a></li>
-            <li><a href="#research" onClick={(e) => handleNavClick(e, "#research")}>Research</a></li>
-            <li><a href="#publications" onClick={(e) => handleNavClick(e, "#publications")}>Publications</a></li>
-            <li><a href="#contact" onClick={(e) => handleNavClick(e, "#contact")}>Contact</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
           <div className="footer__icons">
             <a
